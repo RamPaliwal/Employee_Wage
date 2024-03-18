@@ -2,6 +2,8 @@ import java.util.Random;
 
 interface IEmployeeWage {
     void calculateWage();
+    String getCompany();
+    int getTotalEmpWage();
 }
 
 class EmployeeWage implements IEmployeeWage {
@@ -24,7 +26,7 @@ class EmployeeWage implements IEmployeeWage {
 
         while (totalWorkDays < maxWorkingDays && totalWorkHrs < maxWorkinghrs) {
             totalWorkDays++;
-            int empPresent = new Random().nextInt(3);
+            int empPresent =(int) Math.floor(Math.random() * 10) % 3;
 
             switch (empPresent) {
                 case 1:
@@ -43,13 +45,13 @@ class EmployeeWage implements IEmployeeWage {
     }
 
     @Override
-    public String toString() {
-        return "Details of " + company + " employee\n" +
-                "-----------------------------------------------------\n" +
-                "Wage per hour: " + ratePerHr + "\n" +
-                "Maximum working days: " + maxWorkingDays + "\n" +
-                "Maximum working hours: " + maxWorkinghrs + "\n" +
-                "Total wage for a month of " + company + " employee is " + totalEmpWage + "\n";
+    public String getCompany() {
+        return company;
+    }
+
+    @Override
+    public int getTotalEmpWage() {
+        return totalEmpWage;
     }
 
     public static void main(String[] args)
@@ -57,16 +59,23 @@ class EmployeeWage implements IEmployeeWage {
         System.out.println("Welcome to Employee Wage Computation Program....");
 
         IEmployeeWage[] companies = new IEmployeeWage[3];
-        companies[0] = new EmployeeWage("Google", 20, 20, 100);
-        companies[1] = new EmployeeWage("Microsoft", 18, 20, 120);
-        companies[2] = new EmployeeWage("Amazon", 24, 22, 130);
+        companies[0] = EmployeeWageAPI.createEmployeeWage("Google", 20, 20, 100);
+        companies[1] = EmployeeWageAPI.createEmployeeWage("Microsoft", 18, 20, 120);
+        companies[2] = EmployeeWageAPI.createEmployeeWage("Amazon", 24, 22, 130);
 
-        for(int i = 0; i < companies.length; i++)
+        for (IEmployeeWage company : companies)
         {
-            IEmployeeWage company = companies[i];
             company.calculateWage();
-            System.out.println(company);
+            System.out.println("Company: " + company.getCompany() + ", Total Wage: " + company.getTotalEmpWage());
         }
+    }
+}
 
+class EmployeeWageAPI {
+    private EmployeeWageAPI() {}
+
+    public static IEmployeeWage createEmployeeWage(String company, int ratePerHr, int maxWorkingDays, int maxWorkinghrs)
+    {
+        return new EmployeeWage(company, ratePerHr, maxWorkingDays, maxWorkinghrs);
     }
 }
