@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 
 interface IEmployeeWage
@@ -72,6 +74,7 @@ class EmployeeWage implements IEmployeeWage
 
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to Employee Wage Computation Program....");
 
         ArrayList<IEmployeeWage> companies = new ArrayList<>();
@@ -80,10 +83,25 @@ class EmployeeWage implements IEmployeeWage
         companies.add(new EmployeeWage("Amazon", 24, 22, 130));
         companies.add(new EmployeeWage("Accenture", 22, 25, 110));
 
-        for (IEmployeeWage company : companies)
-        {
+        HashMap<String, Integer> totalWagesMap = new HashMap<>();
+
+        for (IEmployeeWage company : companies) {
             company.calculateWage();
+            totalWagesMap.put(company.getCompany(), company.getTotalEmpWage());
             System.out.println("Company: " + company.getCompany() + ", Daily Wage: " + company.getDailyWage() + ", Total Wage: " + company.getTotalEmpWage());
+        }
+
+        // Querying total wage by company
+        System.out.print("Enter the company to get daily wage: ");
+        String queriedCompany = sc.nextLine();
+        if (totalWagesMap.containsKey(queriedCompany))
+        {
+            int totalWage = totalWagesMap.get(queriedCompany);
+            System.out.println("Total Wage for " + queriedCompany + ": " + totalWage);
+        }
+        else
+        {
+            System.out.println("Total wage not found for company: " + queriedCompany);
         }
     }
 }
