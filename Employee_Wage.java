@@ -1,11 +1,12 @@
 import java.util.ArrayList;
-import java.util.List;
+
 
 interface IEmployeeWage
 {
     void calculateWage();
     String getCompany();
     int getTotalEmpWage();
+    int getDailyWage();
 }
 
 class EmployeeWage implements IEmployeeWage
@@ -15,6 +16,7 @@ class EmployeeWage implements IEmployeeWage
     private final int maxWorkingDays;
     private final int maxWorkinghrs;
     private int totalEmpWage;
+    private int dailyWage;
 
     public EmployeeWage(String company, int ratePerHr, int maxWorkingDays, int maxWorkinghrs)
     {
@@ -46,6 +48,8 @@ class EmployeeWage implements IEmployeeWage
 
             totalWorkHrs += empHr;
         }
+        int dailyEarned = empHr * ratePerHr;
+        dailyWage += dailyEarned;
         totalEmpWage = totalWorkHrs * ratePerHr;
     }
 
@@ -60,6 +64,12 @@ class EmployeeWage implements IEmployeeWage
     {
         return totalEmpWage;
     }
+    public int getDailyWage()
+    {
+        return dailyWage;
+    }
+
+
 
     public static void main(String[] args) {
         System.out.println("Welcome to Employee Wage Computation Program....");
@@ -73,7 +83,7 @@ class EmployeeWage implements IEmployeeWage
         for (IEmployeeWage company : companies)
         {
             company.calculateWage();
-            System.out.println("Company: " + company.getCompany() + ", Total Wage: " + company.getTotalEmpWage());
+            System.out.println("Company: " + company.getCompany() + ", Daily Wage: " + company.getDailyWage() + ", Total Wage: " + company.getTotalEmpWage());
         }
     }
 }
